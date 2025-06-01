@@ -9,7 +9,7 @@ $code-font-size: 13px;
 
 .MarkdownContent {
   line-height: 1.6;
-  color: var(--bolt-elements-textPrimary);
+  color: var(--dev-agents-elements-textPrimary);
 
   > *:not(:last-child) {
     margin-block-end: 16px;
@@ -25,7 +25,7 @@ $code-font-size: 13px;
       margin-block-end: 16px;
       font-weight: 600;
       line-height: 1.25;
-      color: var(--bolt-elements-textPrimary);
+      color: var(--dev-agents-elements-textPrimary);
     }
   }
 

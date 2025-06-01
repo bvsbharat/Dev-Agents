@@ -21,7 +21,7 @@ export function Header() {
       <div className="flex items-center gap-2 z-logo text-dev-agents-elements-textPrimary cursor-pointer">
         <div className="i-ph:sidebar-simple-duotone text-xl" />
         <a href="/" className="text-2xl font-semibold text-accent flex items-center">
-          <span className="i-dev-agents:logo-text?mask w-[46px] inline-block" />
+          <span className="text-2xl font-mono font-semibold tracking-widest text-black-500">DEV&#x2E;AGENTS</span>
         </a>
       </div>
       <span className="flex-1 px-4 truncate text-center text-dev-agents-elements-textPrimary">

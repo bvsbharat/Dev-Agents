@@ -50,7 +50,7 @@ Agents communicate through defined interfaces and context channels, sharing scre
 
 ## 📦 Tech Stack
 
-- 🧬 [Bolt](https://github.com/microsoft/autogen) – Core agentic framework
+- 🧬 [Dev-Agents](https://github.com/microsoft/autogen) – Core agentic framework
 - ⚛️ React – Frontend generation target
 - 🖼️ Vision models – For interpreting screenshots and designs
 - 🔍 Lighthouse – Automated UI evaluation
