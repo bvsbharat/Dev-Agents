@@ -3,6 +3,7 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { toast } from 'react-toastify';
 import { createScopedLogger } from '~/utils/logger';
+import html2canvas from 'html2canvas';
 
 interface EvaluationResult {
   matchScore: number;
@@ -52,6 +53,164 @@ export function ValuationAgent({
   // Track if we've detected a preview URL
   const [detectedPreviewUrl, setDetectedPreviewUrl] = useState('');
 
+  // Track the last content hash to detect changes
+  const [lastContentHash, setLastContentHash] = useState<string>('');
+
+  // Simple hash function for content comparison
+  const hashContent = (content: string): string => {
+    let hash = 0;
+    for (let i = 0; i < content.length; i++) {
+      const char = content.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash.toString();
+  };
+
+  // Function to capture the screen using html2canvas
+  const captureScreenshot = useCallback(async (): Promise<string> => {
+    try {
+      logger.debug('Capturing screenshot of the page using html2canvas');
+      
+      // Capture the entire page
+      const canvas = await html2canvas(document.body, {
+        logging: false,
+        allowTaint: true,
+        useCORS: true,
+        scale: 1,
+      });
+      
+      // Convert to base64 image
+      const base64image = canvas.toDataURL('image/png');
+      logger.debug('Screenshot captured successfully');
+      
+      return base64image;
+    } catch (error) {
+      logger.error('Error capturing screenshot:', error);
+      throw error;
+    }
+  }, []);
+  
+  // Function to get the rendered HTML content from the preview, including iframe content
+  const getRenderedPreviewHtml = useCallback(async (previewUrl: string, attempt = 1, maxAttempts = 8, waitingToastId?: string): Promise<{html: string | null, changed: boolean}> => {
+    // Only log on first attempt or every third attempt to reduce noise
+    if (attempt === 1 || attempt % 3 === 0) {
+      logger.debug(`Attempting to get rendered preview HTML (attempt ${attempt}/${maxAttempts})`);
+    }
+    
+    // Wait for the preview to render - longer delay for later attempts
+    await new Promise(resolve => setTimeout(resolve, Math.min(attempt * 800, 3000))); // Exponential backoff with cap
+    
+    try {
+      // First, try to find an iframe that might contain the preview
+      const iframes = document.querySelectorAll('iframe');
+      logger.debug(`Found ${iframes.length} iframes on the page`);
+      
+      // Try each iframe to see if we can access its content
+      for (const iframe of iframes) {
+        try {
+          // Check if this iframe is likely to be the preview
+          // Look for clues in the src, id, or class
+          const iframeSrc = iframe.getAttribute('src') || '';
+          const iframeId = iframe.getAttribute('id') || '';
+          const iframeClass = iframe.getAttribute('class') || '';
+          
+          const isLikelyPreview = 
+            iframeSrc.includes('preview') || 
+            iframeId.includes('preview') || 
+            iframeClass.includes('preview') || 
+            iframeSrc.includes('webcontainer') || 
+            iframeSrc.includes('sandbox');
+          
+          // If it looks like a preview iframe or we're on our last attempt, try to access its content
+          if (isLikelyPreview || attempt >= maxAttempts - 1) {
+            logger.debug(`Trying to access content of iframe with src: ${iframeSrc}`);
+            
+            // Try to access the iframe's content
+            const iframeWindow = iframe.contentWindow;
+            if (iframeWindow && iframeWindow.document) {
+              const iframeContent = iframeWindow.document.documentElement.outerHTML;
+              if (iframeContent && iframeContent.length > 100) {
+                logger.debug('Successfully extracted content from iframe');
+                const contentHash = hashContent(iframeContent);
+                const hasChanged = contentHash !== lastContentHash;
+                
+                // Only update the hash if we're returning this content
+                if (hasChanged) {
+                  setLastContentHash(contentHash);
+                }
+                
+                return { html: iframeContent.trim(), changed: hasChanged };
+              }
+            }
+          }
+        } catch (iframeError) {
+          logger.debug('Error accessing iframe content:', iframeError);
+          // Continue to the next iframe
+        }
+      }
+      
+      // If no iframe content was accessible, try to find preview content in the main document
+      const previewSelectors = [
+        '.preview', // Class-based selector
+        '[role="tabpanel"]', // ARIA role for tab panels
+        'main', // Main content area
+        'code', // Code elements
+        '.output', // Common class for output/preview areas
+        '#preview', // ID-based selector
+      ];
+      
+      for (const selector of previewSelectors) {
+        const element = document.querySelector(selector);
+        if (element) {
+          const content = element.innerHTML;
+          if (content && content.length > 100) {
+            logger.debug(`Found preview content using selector: ${selector}`);
+            const contentHash = hashContent(content);
+            const hasChanged = contentHash !== lastContentHash;
+            
+            if (hasChanged) {
+              setLastContentHash(contentHash);
+            }
+            
+            return { html: content, changed: hasChanged };
+          }
+        }
+      }
+      
+      // If we still haven't found anything and have attempts left, retry
+      if (attempt < maxAttempts) {
+        // Only log occasionally to reduce noise
+        if (attempt % 3 === 0) {
+          logger.debug(`No preview content found, retrying (${attempt}/${maxAttempts})`);
+        }
+        return getRenderedPreviewHtml(previewUrl, attempt + 1, maxAttempts, waitingToastId);
+      }
+      
+      // Last resort: return the entire body content
+      logger.debug('Falling back to entire body content');
+      const bodyContent = document.body.innerHTML;
+      const contentHash = hashContent(bodyContent);
+      const hasChanged = contentHash !== lastContentHash;
+      
+      if (hasChanged) {
+        setLastContentHash(contentHash);
+      }
+      
+      return { html: bodyContent, changed: hasChanged };
+      
+    } catch (error) {
+      logger.error('Error getting rendered preview HTML:', error);
+      
+      // If we have attempts left, retry
+      if (attempt < maxAttempts) {
+        return getRenderedPreviewHtml(previewUrl, attempt + 1, maxAttempts, waitingToastId);
+      }
+      
+      return { html: null, changed: false };
+    }
+  }, [lastContentHash]);
+
   // function to evaluate the preview content
   const evaluatePreview = useCallback(async () => {
     if (!url || !requirements) {
@@ -63,14 +222,62 @@ export function ValuationAgent({
     setError('');
 
     try {
-      // Show a waiting toast notification
-      const waitingToast = toast.info('Waiting for preview to be fully generated...', {
+      // Show a waiting toast notification - we'll keep this one active until we're done
+      const waitingToastId = toast.info('Waiting for preview to be fully generated...', {
         autoClose: false,
         closeOnClick: false,
+        closeButton: false
       });
 
-      // Target the preview element specifically
-      // This could be 'preview', 'code', 'iframe', or other selectors depending on your app structure
+      // We'll try multiple times to capture the screenshot until we're confident the content is ready
+      let attempts = 0;
+      const maxWaitAttempts = 10; // Maximum number of attempts to wait for content
+      let screenshot = null;
+      let htmlContent = null;
+      
+      do {
+        // If this isn't our first attempt, update the toast message
+        if (attempts > 0) {
+          toast.update(waitingToastId, {
+            render: `Waiting for preview content to fully render (${attempts}/${maxWaitAttempts})...`,
+            autoClose: false,
+            closeOnClick: false,
+            closeButton: false
+          });
+        }
+        
+        // Wait a bit longer between attempts
+        if (attempts > 0) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        
+        try {
+          // First try to get HTML content
+          const contentResult = await getRenderedPreviewHtml(url, 1, 5, waitingToastId);
+          htmlContent = contentResult.html;
+          
+          // Then capture a screenshot
+          screenshot = await captureScreenshot();
+          
+          // If we have both, we can proceed
+          if (htmlContent && screenshot && contentResult.changed) {
+            break;
+          }
+        } catch (err) {
+          logger.error('Error during content capture attempt:', err);
+          // Continue to next attempt
+        }
+        
+        attempts++;
+      } while (attempts < maxWaitAttempts);
+      
+      // Update toast to show we're now evaluating
+      toast.update(waitingToastId, {
+        render: 'Evaluating preview content...',
+        autoClose: 5000
+      });
+      
+      // Target the preview element specifically as a fallback
       const previewSelector = 'preview';
 
       const response = await fetch('/api/valuation', {
@@ -82,11 +289,13 @@ export function ValuationAgent({
           url,
           initialRequirements: requirements,
           selector: previewSelector, // Pass the selector to target only preview content
+          html: htmlContent || undefined, // Send the client-extracted HTML if available
+          screenshot: screenshot // Send the screenshot as base64
         }),
       });
 
       // Close the waiting toast
-      toast.dismiss(waitingToast);
+      toast.dismiss(waitingToastId);
 
       if (!response.ok) {
         const errorData = await response.json();

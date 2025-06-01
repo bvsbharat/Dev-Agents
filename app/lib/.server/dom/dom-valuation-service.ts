@@ -11,6 +11,7 @@ export interface ValuationRequest {
   initialRequirements: string;
   html?: string; // Optional HTML content if already available
   selector?: string; // Optional CSS selector to target specific content
+  screenshot?: string; // Optional base64-encoded screenshot
 }
 
 /**
@@ -301,6 +302,13 @@ export async function evaluateWebPage(
     
     /* Extract key information from HTML */
     const keyInfo = extractKeyInfo(html);
+    
+    /* Prepare additional context from screenshot if available */
+    let additionalContext = '';
+    if (request.screenshot) {
+      console.log('Screenshot data available for evaluation');
+      additionalContext = '\n\nA screenshot of the rendered page was also captured and is being used for evaluation.';
+    }
 
     /* Create evaluation prompt */
     const messages = [
@@ -321,7 +329,7 @@ export async function evaluateWebPage(
       },
       {
         role: 'user',
-        content: `Initial Requirements: ${request.initialRequirements}\n\nWeb Page Structure: ${keyInfo}`
+        content: `Initial Requirements: ${request.initialRequirements}\n\nWeb Page Structure: ${keyInfo}${additionalContext}`
       }
     ];
 

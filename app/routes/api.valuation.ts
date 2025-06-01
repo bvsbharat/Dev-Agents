@@ -28,7 +28,9 @@ export async function action({ context, request }: ActionFunctionArgs) {
     const result = await evaluateWebPage({ 
       url: valuationRequest.url, 
       initialRequirements: valuationRequest.initialRequirements, 
-      selector: selector || 'preview' 
+      selector: selector || 'preview',
+      html: valuationRequest.html,
+      screenshot: valuationRequest.screenshot
     }, context.cloudflare.env);
 
     return json(result);
