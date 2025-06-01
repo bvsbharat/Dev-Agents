@@ -1,0 +1,251 @@
+/* Color Tokens Light Theme */
+:root,
+:root[data-theme='light'] {
+  --dev-agents-elements-borderColor: theme('colors.alpha.gray.10');
+  --dev-agents-elements-borderColorActive: theme('colors.accent.600');
+
+  --dev-agents-elements-bg-depth-1: theme('colors.white');
+  --dev-agents-elements-bg-depth-2: theme('colors.gray.50');
+  --dev-agents-elements-bg-depth-3: theme('colors.gray.200');
+  --dev-agents-elements-bg-depth-4: theme('colors.alpha.gray.5');
+
+  --dev-agents-elements-textPrimary: theme('colors.gray.950');
+  --dev-agents-elements-textSecondary: theme('colors.gray.600');
+  --dev-agents-elements-textTertiary: theme('colors.gray.500');
+
+  --dev-agents-elements-code-background: theme('colors.gray.100');
+  --dev-agents-elements-code-text: theme('colors.gray.950');
+
+  --dev-agents-elements-button-primary-background: theme('colors.alpha.accent.10');
+  --dev-agents-elements-button-primary-backgroundHover: theme('colors.alpha.accent.20');
+  --dev-agents-elements-button-primary-text: theme('colors.accent.500');
+
+  --dev-agents-elements-button-secondary-background: theme('colors.alpha.gray.5');
+  --dev-agents-elements-button-secondary-backgroundHover: theme('colors.alpha.gray.10');
+  --dev-agents-elements-button-secondary-text: theme('colors.gray.950');
+
+  --dev-agents-elements-button-danger-background: theme('colors.alpha.red.10');
+  --dev-agents-elements-button-danger-backgroundHover: theme('colors.alpha.red.20');
+  --dev-agents-elements-button-danger-text: theme('colors.red.500');
+
+  --dev-agents-elements-item-contentDefault: theme('colors.alpha.gray.50');
+  --dev-agents-elements-item-contentActive: theme('colors.gray.950');
+  --dev-agents-elements-item-contentAccent: theme('colors.accent.700');
+  --dev-agents-elements-item-contentDanger: theme('colors.red.500');
+  --dev-agents-elements-item-backgroundDefault: rgba(0, 0, 0, 0);
+  --dev-agents-elements-item-backgroundActive: theme('colors.alpha.gray.5');
+  --dev-agents-elements-item-backgroundAccent: theme('colors.alpha.accent.10');
+  --dev-agents-elements-item-backgroundDanger: theme('colors.alpha.red.10');
+
+  --dev-agents-elements-loader-background: theme('colors.alpha.gray.10');
+  --dev-agents-elements-loader-progress: theme('colors.accent.500');
+
+  --dev-agents-elements-artifacts-background: theme('colors.white');
+  --dev-agents-elements-artifacts-backgroundHover: theme('colors.alpha.gray.2');
+  --dev-agents-elements-artifacts-borderColor: var(--dev-agents-elements-borderColor);
+  --dev-agents-elements-artifacts-inlineCode-background: theme('colors.gray.100');
+  --dev-agents-elements-artifacts-inlineCode-text: var(--dev-agents-elements-textPrimary);
+
+  --dev-agents-elements-actions-background: theme('colors.white');
+  --dev-agents-elements-actions-code-background: theme('colors.gray.800');
+
+  --dev-agents-elements-messages-background: theme('colors.gray.100');
+  --dev-agents-elements-messages-linkColor: theme('colors.accent.500');
+  --dev-agents-elements-messages-code-background: theme('colors.gray.800');
+  --dev-agents-elements-messages-inlineCode-background: theme('colors.gray.200');
+  --dev-agents-elements-messages-inlineCode-text: theme('colors.gray.800');
+
+  --dev-agents-elements-icon-success: theme('colors.green.500');
+  --dev-agents-elements-icon-error: theme('colors.red.500');
+  --dev-agents-elements-icon-primary: theme('colors.gray.950');
+  --dev-agents-elements-icon-secondary: theme('colors.gray.600');
+  --dev-agents-elements-icon-tertiary: theme('colors.gray.500');
+
+  --dev-agents-elements-dividerColor: theme('colors.gray.100');
+
+  --dev-agents-elements-prompt-background: theme('colors.alpha.white.80');
+
+  --dev-agents-elements-sidebar-dropdownShadow: theme('colors.alpha.gray.10');
+  --dev-agents-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
+  --dev-agents-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
+  --dev-agents-elements-sidebar-buttonText: theme('colors.accent.700');
+
+  --dev-agents-elements-preview-addressBar-background: theme('colors.gray.100');
+  --dev-agents-elements-preview-addressBar-backgroundHover: theme('colors.alpha.gray.5');
+  --dev-agents-elements-preview-addressBar-backgroundActive: theme('colors.white');
+  --dev-agents-elements-preview-addressBar-text: var(--dev-agents-elements-textSecondary);
+  --dev-agents-elements-preview-addressBar-textActive: var(--dev-agents-elements-textPrimary);
+
+  --dev-agents-elements-terminals-background: theme('colors.white');
+  --dev-agents-elements-terminals-buttonBackground: var(--dev-agents-elements-bg-depth-4);
+
+  --dev-agents-elements-cta-background: theme('colors.gray.100');
+  --dev-agents-elements-cta-text: theme('colors.gray.950');
+
+  /* Terminal Colors */
+  --dev-agents-terminal-background: var(--dev-agents-elements-terminals-background);
+  --dev-agents-terminal-foreground: #333333;
+  --dev-agents-terminal-selection-background: #00000040;
+  --dev-agents-terminal-black: #000000;
+  --dev-agents-terminal-red: #cd3131;
+  --dev-agents-terminal-green: #00bc00;
+  --dev-agents-terminal-yellow: #949800;
+  --dev-agents-terminal-blue: #0451a5;
+  --dev-agents-terminal-magenta: #bc05bc;
+  --dev-agents-terminal-cyan: #0598bc;
+  --dev-agents-terminal-white: #555555;
+  --dev-agents-terminal-brightBlack: #686868;
+  --dev-agents-terminal-brightRed: #cd3131;
+  --dev-agents-terminal-brightGreen: #00bc00;
+  --dev-agents-terminal-brightYellow: #949800;
+  --dev-agents-terminal-brightBlue: #0451a5;
+  --dev-agents-terminal-brightMagenta: #bc05bc;
+  --dev-agents-terminal-brightCyan: #0598bc;
+  --dev-agents-terminal-brightWhite: #a5a5a5;
+}
+
+/* Color Tokens Dark Theme */
+:root,
+:root[data-theme='dark'] {
+  --dev-agents-elements-borderColor: theme('colors.alpha.white.10');
+  --dev-agents-elements-borderColorActive: theme('colors.accent.500');
+
+  --dev-agents-elements-bg-depth-1: theme('colors.gray.950');
+  --dev-agents-elements-bg-depth-2: theme('colors.gray.900');
+  --dev-agents-elements-bg-depth-3: theme('colors.gray.800');
+  --dev-agents-elements-bg-depth-4: theme('colors.alpha.white.5');
+
+  --dev-agents-elements-textPrimary: theme('colors.white');
+  --dev-agents-elements-textSecondary: theme('colors.gray.400');
+  --dev-agents-elements-textTertiary: theme('colors.gray.500');
+
+  --dev-agents-elements-code-background: theme('colors.gray.800');
+  --dev-agents-elements-code-text: theme('colors.white');
+
+  --dev-agents-elements-button-primary-background: theme('colors.alpha.accent.10');
+  --dev-agents-elements-button-primary-backgroundHover: theme('colors.alpha.accent.20');
+  --dev-agents-elements-button-primary-text: theme('colors.accent.500');
+
+  --dev-agents-elements-button-secondary-background: theme('colors.alpha.white.5');
+  --dev-agents-elements-button-secondary-backgroundHover: theme('colors.alpha.white.10');
+  --dev-agents-elements-button-secondary-text: theme('colors.white');
+
+  --dev-agents-elements-button-danger-background: theme('colors.alpha.red.10');
+  --dev-agents-elements-button-danger-backgroundHover: theme('colors.alpha.red.20');
+  --dev-agents-elements-button-danger-text: theme('colors.red.500');
+
+  --dev-agents-elements-item-contentDefault: theme('colors.alpha.white.50');
+  --dev-agents-elements-item-contentActive: theme('colors.white');
+  --dev-agents-elements-item-contentAccent: theme('colors.accent.500');
+  --dev-agents-elements-item-contentDanger: theme('colors.red.500');
+  --dev-agents-elements-item-backgroundDefault: rgba(255, 255, 255, 0);
+  --dev-agents-elements-item-backgroundActive: theme('colors.alpha.white.10');
+  --dev-agents-elements-item-backgroundAccent: theme('colors.alpha.accent.10');
+  --dev-agents-elements-item-backgroundDanger: theme('colors.alpha.red.10');
+
+  --dev-agents-elements-loader-background: theme('colors.alpha.gray.10');
+  --dev-agents-elements-loader-progress: theme('colors.accent.500');
+
+  --dev-agents-elements-artifacts-background: theme('colors.gray.900');
+  --dev-agents-elements-artifacts-backgroundHover: theme('colors.alpha.white.5');
+  --dev-agents-elements-artifacts-borderColor: var(--dev-agents-elements-borderColor);
+  --dev-agents-elements-artifacts-inlineCode-background: theme('colors.gray.800');
+  --dev-agents-elements-artifacts-inlineCode-text: theme('colors.white');
+
+  --dev-agents-elements-actions-background: theme('colors.gray.900');
+  --dev-agents-elements-actions-code-background: theme('colors.gray.800');
+
+  --dev-agents-elements-messages-background: theme('colors.gray.800');
+  --dev-agents-elements-messages-linkColor: theme('colors.accent.500');
+  --dev-agents-elements-messages-code-background: theme('colors.gray.900');
+  --dev-agents-elements-messages-inlineCode-background: theme('colors.gray.700');
+  --dev-agents-elements-messages-inlineCode-text: var(--dev-agents-elements-textPrimary);
+
+  --dev-agents-elements-icon-success: theme('colors.green.400');
+  --dev-agents-elements-icon-error: theme('colors.red.400');
+  --dev-agents-elements-icon-primary: theme('colors.gray.950');
+  --dev-agents-elements-icon-secondary: theme('colors.gray.600');
+  --dev-agents-elements-icon-tertiary: theme('colors.gray.500');
+
+  --dev-agents-elements-dividerColor: theme('colors.gray.100');
+
+  --dev-agents-elements-prompt-background: theme('colors.alpha.gray.80');
+
+  --dev-agents-elements-sidebar-dropdownShadow: theme('colors.alpha.gray.30');
+  --dev-agents-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
+  --dev-agents-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
+  --dev-agents-elements-sidebar-buttonText: theme('colors.accent.500');
+
+  --dev-agents-elements-preview-addressBar-background: var(--dev-agents-elements-bg-depth-1);
+  --dev-agents-elements-preview-addressBar-backgroundHover: theme('colors.alpha.white.5');
+  --dev-agents-elements-preview-addressBar-backgroundActive: var(--dev-agents-elements-bg-depth-1);
+  --dev-agents-elements-preview-addressBar-text: var(--dev-agents-elements-textSecondary);
+  --dev-agents-elements-preview-addressBar-textActive: var(--dev-agents-elements-textPrimary);
+
+  --dev-agents-elements-terminals-background: var(--dev-agents-elements-bg-depth-1);
+  --dev-agents-elements-terminals-buttonBackground: var(--dev-agents-elements-bg-depth-3);
+
+  --dev-agents-elements-cta-background: theme('colors.alpha.white.10');
+  --dev-agents-elements-cta-text: theme('colors.white');
+
+  /* Terminal Colors */
+  --dev-agents-terminal-background: var(--dev-agents-elements-terminals-background);
+  --dev-agents-terminal-foreground: #eff0eb;
+  --dev-agents-terminal-selection-background: #97979b33;
+  --dev-agents-terminal-black: #000000;
+  --dev-agents-terminal-red: #ff5c57;
+  --dev-agents-terminal-green: #5af78e;
+  --dev-agents-terminal-yellow: #f3f99d;
+  --dev-agents-terminal-blue: #57c7ff;
+  --dev-agents-terminal-magenta: #ff6ac1;
+  --dev-agents-terminal-cyan: #9aedfe;
+  --dev-agents-terminal-white: #f1f1f0;
+  --dev-agents-terminal-brightBlack: #686868;
+  --dev-agents-terminal-brightRed: #ff5c57;
+  --dev-agents-terminal-brightGreen: #5af78e;
+  --dev-agents-terminal-brightYellow: #f3f99d;
+  --dev-agents-terminal-brightBlue: #57c7ff;
+  --dev-agents-terminal-brightMagenta: #ff6ac1;
+  --dev-agents-terminal-brightCyan: #9aedfe;
+  --dev-agents-terminal-brightWhite: #f1f1f0;
+}
+
+/*
+ * Element Tokens
+ *
+ * Hierarchy: Element Token -> (Element Token | Color Tokens) -> Primitives
+ */
+:root {
+  --header-height: 54px;
+  --chat-max-width: 37rem;
+  --chat-min-width: 640px;
+  --workbench-width: min(calc(100% - var(--chat-min-width)), 1536px);
+  --workbench-inner-width: var(--workbench-width);
+  --workbench-left: calc(100% - var(--workbench-width));
+
+  /* Toasts */
+  --toastify-color-progress-success: var(--dev-agents-elements-icon-success);
+  --toastify-color-progress-error: var(--dev-agents-elements-icon-error);
+
+  /* Terminal */
+  --dev-agents-elements-terminal-backgroundColor: var(--dev-agents-terminal-background);
+  --dev-agents-elements-terminal-textColor: var(--dev-agents-terminal-foreground);
+  --dev-agents-elements-terminal-cursorColor: var(--dev-agents-terminal-foreground);
+  --dev-agents-elements-terminal-selection-backgroundColor: var(--dev-agents-terminal-selection-background);
+  --dev-agents-elements-terminal-color-black: var(--dev-agents-terminal-black);
+  --dev-agents-elements-terminal-color-red: var(--dev-agents-terminal-red);
+  --dev-agents-elements-terminal-color-green: var(--dev-agents-terminal-green);
+  --dev-agents-elements-terminal-color-yellow: var(--dev-agents-terminal-yellow);
+  --dev-agents-elements-terminal-color-blue: var(--dev-agents-terminal-blue);
+  --dev-agents-elements-terminal-color-magenta: var(--dev-agents-terminal-magenta);
+  --dev-agents-elements-terminal-color-cyan: var(--dev-agents-terminal-cyan);
+  --dev-agents-elements-terminal-color-white: var(--dev-agents-terminal-white);
+  --dev-agents-elements-terminal-color-brightBlack: var(--dev-agents-terminal-brightBlack);
+  --dev-agents-elements-terminal-color-brightRed: var(--dev-agents-terminal-brightRed);
+  --dev-agents-elements-terminal-color-brightGreen: var(--dev-agents-terminal-brightGreen);
+  --dev-agents-elements-terminal-color-brightYellow: var(--dev-agents-terminal-brightYellow);
+  --dev-agents-elements-terminal-color-brightBlue: var(--dev-agents-terminal-brightBlue);
+  --dev-agents-elements-terminal-color-brightMagenta: var(--dev-agents-terminal-brightMagenta);
+  --dev-agents-elements-terminal-color-brightCyan: var(--dev-agents-terminal-brightCyan);
+  --dev-agents-elements-terminal-color-brightWhite: var(--dev-agents-terminal-brightWhite);
+}
