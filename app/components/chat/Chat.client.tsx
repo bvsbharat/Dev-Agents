@@ -103,6 +103,58 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
       storeMessageHistory(messages).catch((error) => toast.error(error.message));
     }
   }, [messages, isLoading, parseMessages]);
+  
+  // Listen for valuation agent messages
+  useEffect(() => {
+    const handleValuationMessages = (event: MessageEvent) => {
+      // Check if the message is from the same origin for security
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+      
+      // Handle different message types
+      if (event.data && event.data.type) {
+        switch (event.data.type) {
+          case 'VALUATION_SUGGESTIONS':
+          case 'VALUATION_SUCCESS':
+            // Add the suggestions or success message as a system message
+            logger.debug(`Received ${event.data.type}:`, event.data.content);
+            append({
+              role: 'system',
+              content: event.data.content,
+              id: `valuation-${Date.now()}`,
+            });
+            break;
+            
+          case 'TRIGGER_CHAT':
+            // Automatically send a message to the chat as if the user typed it
+            logger.debug('Auto-triggering chat message:', event.data.content);
+            // Store the message in the input field and set it
+            setInput(event.data.content);
+            // Use setTimeout to allow the state to update before submitting
+            setTimeout(() => {
+              const form = document.querySelector('form');
+              if (form) {
+                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+              }
+            }, 100);
+            break;
+            
+          default:
+            // Ignore unknown message types
+            break;
+        }
+      }
+    };
+    
+    // Add the event listener
+    window.addEventListener('message', handleValuationMessages);
+    
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('message', handleValuationMessages);
+    };
+  }, [append, setInput]);
 
   const scrollTextArea = () => {
     const textarea = textareaRef.current;
